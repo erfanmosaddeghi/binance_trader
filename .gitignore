@@ -127,3 +127,17 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.config.py
+*.egg
+MANIFEST
+
+# Environments
+.env
+.venv
+.vscode
+env/
+venv/
+VENV/
+ENV/
+env.bak/
+venv.bak/
