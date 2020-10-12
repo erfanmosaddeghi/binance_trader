@@ -73,6 +73,15 @@ def register(request):
 
 
 """
+This view just test server for live
+"""
+@api_view(['GET',])
+def check(request):
+    if request.method == 'GET':
+        return Response("it's a Live!")
+
+
+"""
 This is Class base view 
 Checks for Validation link and Activate The Account
 """
