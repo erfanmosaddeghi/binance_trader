@@ -1,19 +1,19 @@
 from django.urls import path
 from gateway.api.views import (
-    register,
-    Verification,
-    check
+    register_view,
+    Verification_view,
+    checkServer_view
 )
 
 from gateway.api.views import CustomAuthToken
-
 
 app_name = 'gateway'
 
 
 urlpatterns = [
-    path('register', register,name='register'),
-    path('login',CustomAuthToken.as_view(),name='Login'),
-    path('verification/<uid>/<token>',Verification.as_view(),name='verification_account'),
-    path('check',check,name="check") # This is just test server live!
+    path('register', register_view,name='register'), # For register NewUser
+    path('login',CustomAuthToken.as_view(),name='Login'), # for login Users
+    path('verification/<uid>/<token>',Verification_view.as_view(),name='verification_account'), # This Url For Email verification
+    path('checkserver',checkServer_view,name="checkServer") # This is just test server live!
+    
 ]

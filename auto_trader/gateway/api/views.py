@@ -1,29 +1,25 @@
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from gateway.models import User
 from django.views import View
-
 from gateway.api.serializers import UserRegisterSerializer
-
 from rest_framework.authtoken.models import Token
-
 from django.utils.encoding import force_bytes,force_text,DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from .utils import email_token
-
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 import smtplib
-
+from rest_framework.permissions import IsAuthenticated
 
 """
 Registration part That Contains email sending process and make Validation link for user
 """
 @api_view(['POST',])
-def register(request):
+def register_view(request):
 
     if request.method =='POST':
         serializer = UserRegisterSerializer(data=request.data)
@@ -43,7 +39,7 @@ def register(request):
             server.ehlo()
             server.starttls()
             server.ehlo()
-            sending_userGmail_address = ''
+            sending_userGmail_address = 'erfan.mosaddeghi@gmail.com'
             gmail_password = ''
             server.login(sending_userGmail_address,gmail_password)
             # Validation link Create
@@ -76,9 +72,10 @@ def register(request):
 This view just test server for live
 """
 @api_view(['GET',])
-def check(request):
+@permission_classes((IsAuthenticated, ))
+def checkServer_view(request):
     if request.method == 'GET':
-        return Response("it's a Live!")
+        return Response("It's Live!")
 
 
 """
@@ -86,7 +83,7 @@ This is Class base view
 Checks for Validation link and Activate The Account
 """
 
-class Verification(View):
+class Verification_view(View):
 
     def get(self, request, uid, token):
         try:
@@ -138,3 +135,5 @@ class CustomAuthToken(ObtainAuthToken):
             'user_id': user.pk,
             'email': user.email
         })
+
+
