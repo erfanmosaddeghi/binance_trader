@@ -1,6 +1,12 @@
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes,authentication_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from rest_framework.authentication import TokenAuthentication
+
 from gateway.models import User
 from django.views import View
 from gateway.api.serializers import UserRegisterSerializer
@@ -13,14 +19,13 @@ from .utils import email_token
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 import smtplib
-from rest_framework.permissions import IsAuthenticated
+
 
 """
 Registration part That Contains email sending process and make Validation link for user
 """
 @api_view(['POST',])
 def register_view(request):
-
     if request.method =='POST':
         serializer = UserRegisterSerializer(data=request.data)
         data = {}
@@ -65,14 +70,13 @@ def register_view(request):
             data = serializer.errors
             return Response(data)
 
-       
-
 
 """
 This view just test server for live
 """
 @api_view(['GET',])
-@permission_classes((IsAuthenticated, ))
+@authentication_classes((TokenAuthentication, ))
+@permission_classes([IsAuthenticated])
 def checkServer_view(request):
     if request.method == 'GET':
         return Response("It's Live!")
@@ -82,7 +86,6 @@ def checkServer_view(request):
 This is Class base view 
 Checks for Validation link and Activate The Account
 """
-
 class Verification_view(View):
 
     def get(self, request, uid, token):
@@ -101,11 +104,6 @@ class Verification_view(View):
         except Exception as e:
             pass
         return HttpResponse("Ok")
-
-
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
-from rest_framework.response import Response
 
 
 """

@@ -29,10 +29,3 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
 
 
-
-
-    
-    
-
-
-
