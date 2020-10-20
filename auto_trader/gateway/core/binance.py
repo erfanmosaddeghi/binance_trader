@@ -22,6 +22,12 @@ class binanceCore:
         }
 
 
+
+    """
+        General Data Endpoint
+    """
+
+
     def get_ping_binance(self):
         print("apikey -> {}, apisecret -> {}".format(self.api_key,self.api_secret))
         return self.client.ping()
@@ -50,3 +56,60 @@ class binanceCore:
 
     def get_products_binance(self):
         return self.client.get_products()
+
+
+    """
+        Market Data Endpoint
+    """
+
+
+    def get_order_book_binance(self,symbol,limit=None):
+        if limit != None and limit > 100 and limit < 1000 :
+            return self.client.get_order_book(symbol=symbol)
+        else:    
+            return self.client.get_order_book(symbol=symbol)
+
+
+    def get_recent_trades_binance(self,symbol, limit=None):
+        if limit != None and limit < 500 and limit > 0 :
+            return self.client.get_recent_trades(symbol=symbol)
+        else:
+            return self.client.get_recent_trades(symbol=symbol)
+
+
+    def get_historical_trades_binance(self,symbol,limit=None):
+        if limit != None and limit < 500 and limit > 0 :
+            return self.client.get_historical_trades(symbol=symbol,limit=limit)
+        else:
+            return self.client.get_historical_trades(symbol=symbol)
+
+    
+    def get_aggregate_trades_binance(self,symbol,limit):
+        if limit != None and limit < 500 and limit > 0 :
+            return self.client.get_aggregate_trades(symbol=symbol,limit=limit)
+        else:
+            return self.client.get_aggregate_trades(symbol=symbol)
+
+
+    def get_klines_binance(self,symbol,interval):
+        return  self.client.get_klines(symbol=symbol,interval=interval)
+
+
+    def get_historical_klines_binance(self,symbol,interval):
+        return self.client.get_historical_klines(symbol=symbol,interval=interval)
+
+
+    def get_avg_price_binance(self,symbol):
+        return self.client.get_avg_price(symbol=symbol)
+
+
+    def get_ticker_binance(self,symbol):
+        return self.client.get_ticker(symbol=symbol)
+
+    
+    def get_all_tickers_binance(self):
+        return self.client.get_all_tickers()
+
+    
+    def get_orderbook_tickers_binance(self):
+        return self.client.get_orderbook_tickers()
