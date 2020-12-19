@@ -141,3 +141,4 @@ VENV/
 ENV/
 env.bak/
 venv.bak/
+.token
