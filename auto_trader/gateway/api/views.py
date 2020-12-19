@@ -6,7 +6,6 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
-
 from gateway.models import User
 from django.views import View
 from gateway.api.serializers import UserRegisterSerializer
@@ -19,7 +18,7 @@ from .utils import email_token
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 import smtplib
-
+#from binance.client import Client
 
 """
 Registration part That Contains email sending process and make Validation link for user
@@ -102,7 +101,7 @@ class Verification_view(View):
             user.save()
             return HttpResponse("Your account Is now active")
         except Exception as e:
-            pass
+            return HttpResponse(e)
         return HttpResponse("Ok")
 
 

@@ -9,17 +9,13 @@ class binanceCore:
             self.api_key = a
             self.api_secret = b
         else:
-            self.api_key     = '3pglz1IibLTrrV0nG5fVDn765hAq2QWN1MoGyhyQBQA0UNvZXxqzNYrftmRXiCh1'
-            self.api_secret  = 'gmqxD6BiHvSbr7BYPOYo4kWQFwnhhEg1TtNxrry7Wp2HnTOL7IN1RMAh5BcxtR1m'
+            self.api_key     = ''
+            self.api_secret  = ''
         
         
         self.client = Client(self.api_key,self.api_secret)
         self.client.API_URL = 'https://testnet.binance.vision/api'
 
-        self.proxies     = {
-        'http': 'http://10.10.1.10:3128',
-        'https': 'http://10.10.1.10:1080'
-        }
 
 
 
@@ -29,6 +25,9 @@ class binanceCore:
 
 
     def get_ping_binance(self):
+        '''
+            This Api for Check api binance
+        '''
         print("apikey -> {}, apisecret -> {}".format(self.api_key,self.api_secret))
         return self.client.ping()
 
