@@ -10,14 +10,14 @@ from gateway.models import User
 from django.views import View
 from gateway.api.serializers import UserRegisterSerializer
 from rest_framework.authtoken.models import Token
-from django.utils.encoding import force_bytes,force_text,DjangoUnicodeDecodeError
-from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
-from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
+from django.utils.encoding import force_text
+from django.utils.http import urlsafe_base64_decode
+
 from .utils import email_token
+from .utils import emailVerifi
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-import smtplib
+
 #from binance.client import Client
 
 """
@@ -35,36 +35,11 @@ def register_view(request):
             data['UserName'] = user.username
             token = Token.objects.get(user = user).key
             data['Token'] = token
-
-            # Sending Email Part
-            username = request.POST.get('username')
-            user = User.objects.get(username__exact=username)
-            server = smtplib.SMTP('smtp.gmail.com', 587)
-            server.ehlo()
-            server.starttls()
-            server.ehlo()
-            sending_userGmail_address = 'erfan.mosaddeghi@gmail.com'
-            gmail_password = ''
-            server.login(sending_userGmail_address,gmail_password)
-            # Validation link Create
-            uid = urlsafe_base64_encode(force_bytes(user.pk))
-            domain = get_current_site(request).domain
-            link = reverse('gateway:verification_account',kwargs={'uid':uid,'token':email_token.make_token(user)})
-
-            active_url = 'http://'+ domain + link
-            # Email Title and body to Send
-            subject = 'Email verification'
-            body = 'Hi Please use this link to activate your account\n'+active_url
-
-            Massage = f'Subject:{subject}\n\n{body}'
-
-            server.sendmail(
-                f'{sending_userGmail_address}',
-                f'{user.email}',
-                Massage
-            )
-            server.quit()
-            return Response("Please Check Your email")
+            status,msg = emailVerifi.send_mail(request) # Send Email to the user email for verified.
+            if status == True:
+                return Response("Please Check Your email")
+            else:
+                return Response(msg)
         else:
             data = serializer.errors
             return Response(data)
