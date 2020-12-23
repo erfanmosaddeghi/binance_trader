@@ -12,12 +12,11 @@ from gateway.api.serializers import UserRegisterSerializer
 from rest_framework.authtoken.models import Token
 from django.utils.encoding import force_text
 from django.utils.http import urlsafe_base64_decode
-
 from .utils import email_token
 from .utils import emailVerifi
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-
+from binance.client import Client
 #from binance.client import Client
 
 """
@@ -53,7 +52,8 @@ This view just test server for live
 @permission_classes([IsAuthenticated])
 def checkServer_view(request):
     if request.method == 'GET':
-        return Response("It's Live!")
+        cli = Client()
+        return cli.ping()
 
 
 """
