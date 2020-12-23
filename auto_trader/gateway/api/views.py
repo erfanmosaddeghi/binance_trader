@@ -56,6 +56,47 @@ def checkServer_view(request):
         return cli.ping()
 
 
+
+@api_view(['GET',])
+def getMarketDepth_view(symbol):
+    '''Parameters:	
+        symbol (str) – required
+        limit (int) – Default 100; max 1000'''
+    pass
+
+
+@api_view(['GET',])
+def getrecentTrades_view():
+    '''Parameters:	
+        symbol (str) – required
+        limit (int) – Default 500; max 500.'''
+    pass
+
+
+@api_view(['GET','POST'])
+def getAggTrades_view():
+    '''Parameters:	
+        symbol (str) – required
+        fromId (str) – ID to get aggregate trades from INCLUSIVE.
+        startTime (int) – Timestamp in ms to get aggregate trades from INCLUSIVE.
+        endTime (int) – Timestamp in ms to get aggregate trades until INCLUSIVE.
+        limit (int) – Default 500; max 500.'''
+    pass
+
+
+@api_view(['GET','POST'])
+def getKline():
+    '''Parameters:	
+        symbol (str) – required
+        interval (str) –
+        limit (int) –
+        Default 500; max 500.
+        startTime (int) –
+        endTime (int) –'''
+    pass
+
+
+
 """
 This is Class base view 
 Checks for Validation link and Activate The Account
