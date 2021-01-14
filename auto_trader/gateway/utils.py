@@ -2,7 +2,7 @@
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from six import text_type
 import smtplib
-from gateway.models import User
+from .models import User
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
