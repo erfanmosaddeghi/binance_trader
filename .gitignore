@@ -143,3 +143,4 @@ env.bak/
 venv.bak/
 .token
 README copy.md
+config.py

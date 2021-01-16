@@ -196,6 +196,58 @@ def get_historical_klines(request):
 
 
 
+@api_view(['POST'])
+@authentication_classes((TokenAuthentication, ))
+@permission_classes([IsAuthenticated])
+def get_avg_price_view(request):
+    '''Parameters:	
+            symbol (str) – Name of symbol pair e.g BNBBTC
+        '''
+    if request.method == "POST":
+        cli = Client()
+        data = request.data
+        try:
+            agg = cli.get_avg_price(**data)
+            return JsonResponse(agg,safe=False)
+        except BinanceAPIException as e:
+            return JsonResponse({"MessageError":e.message},safe=False)
+
+
+
+@api_view(['POST'])
+@authentication_classes((TokenAuthentication, ))
+@permission_classes([IsAuthenticated])
+def get_ticker_view(request):
+    '''Parameters:	
+            symbol (str) – Name of symbol pair e.g BNBBTC
+        '''
+    if request.method == "POST":
+        cli = Client()
+        data = request.data
+        try:
+            agg = cli.get_ticker(**data)
+            return JsonResponse(agg,safe=False)
+        except BinanceAPIException as e:
+            return JsonResponse({"MessageError":e.message},safe=False)
+
+
+@api_view(['POST'])
+@authentication_classes((TokenAuthentication, ))
+@permission_classes([IsAuthenticated])
+def get_all_tickers_view(request):
+    '''Parameters:	
+            symbol (str) – Name of symbol pair e.g BNBBTC
+        '''
+    if request.method == "POST":
+        cli = Client()
+        data = request.data
+        try:
+            agg = cli.get_all_tickers(**data)
+            return JsonResponse(agg,safe=False)
+        except BinanceAPIException as e:
+            return JsonResponse({"MessageError":e.message},safe=False)
+
+
 
 
 """

@@ -11,7 +11,10 @@ from .views import (
     get_historical_trades_view,
     get_aggregate_trades_view,
     get_klines,
-    get_historical_klines
+    get_historical_klines,
+    get_avg_price_view,
+    get_ticker_view,
+    get_all_tickers_view
 )
 
 app_name = 'gateway'
@@ -30,4 +33,7 @@ urlpatterns = [
     path('getaggtrades',get_aggregate_trades_view,name="getaggtrades"),
     path('getklines',get_klines,name="getklines"),
     path('gethistoriklines',get_historical_klines,name="getklines"),
+    path('getavgprice',get_avg_price_view,name="getavgprice"),
+    path('getticker',get_ticker_view,name="getticker"),
+    path('getalltickers',get_all_tickers_view,name="getalltickers"),
 ]
