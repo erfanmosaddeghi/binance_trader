@@ -6,7 +6,12 @@ from .views import (
     checkServerTime_view,
     get_system_status_view,
     get_exchange_info_view,
-    get_order_book_view
+    get_order_book_view,
+    get_recent_trades_view,
+    get_historical_trades_view,
+    get_aggregate_trades_view,
+    get_klines,
+    get_historical_klines
 )
 
 app_name = 'gateway'
@@ -20,4 +25,9 @@ urlpatterns = [
     path('sysstatus',get_system_status_view,name="systemstatus"),
     path('exchangeinfo',get_exchange_info_view,name="exchangeinfo"),
     path('getorderbook',get_order_book_view,name="getorderbook"),
+    path('getrecenttrades',get_recent_trades_view,name="getrecenttrades"),
+    path('gethistoricaltrades',get_historical_trades_view,name="gethistoricaltrades"),
+    path('getaggtrades',get_aggregate_trades_view,name="getaggtrades"),
+    path('getklines',get_klines,name="getklines"),
+    path('gethistoriklines',get_historical_klines,name="getklines"),
 ]

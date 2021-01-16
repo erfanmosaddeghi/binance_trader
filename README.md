@@ -9,6 +9,6 @@ gateway trader RestfulApi.
 
 
 ## InFutures
-1- Algotrading for autoTrade in binance Spot/Futures
+> 1- Algotrading for autoTrade in binance Spot/Futures
 2- Add ManyModules Bot for AutoTrade Spot/Futures
 3- AutoTrading with MachineLearning Algorithms

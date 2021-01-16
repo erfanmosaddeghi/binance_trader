@@ -13,6 +13,7 @@ from .utils import emailVerifi
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, request
 from binance.client import Client
+from binance.exceptions import *
 from binance.enums import *
 from rest_framework.parsers import JSONParser
 
@@ -80,6 +81,8 @@ def get_exchange_info_view(request):
     GENERAL ENDPOINTS
 """
 @api_view(['POST'])
+@authentication_classes((TokenAuthentication, ))
+@permission_classes([IsAuthenticated])
 def get_order_book_view(request):
     '''Parameters:	
         symbol (str) – required
@@ -88,19 +91,110 @@ def get_order_book_view(request):
         cli = Client()
         data = request.data 
         order_book = cli.get_order_book(**data)
-        return JsonResponse(order_book)
+        return JsonResponse(order_book,safe=False)
 
 
-@api_view(['GET','POST'])
-def getKline():
+@api_view(['POST'])
+@authentication_classes((TokenAuthentication, ))
+@permission_classes([IsAuthenticated])
+def get_recent_trades_view(request):
     '''Parameters:	
         symbol (str) – required
-        interval (str) –
-        limit (int) –
-        Default 500; max 500.
-        startTime (int) –
-        endTime (int) –'''
-    pass
+        limit  (int) - def = 500 to max = 500
+        '''
+    if request.method == "POST":
+        cli = Client()
+        data = request.data
+        recent = cli.get_recent_trades(**data)
+        return JsonResponse(recent,safe=False)
+
+
+
+@api_view(['POST'])
+@authentication_classes((TokenAuthentication, ))
+@permission_classes([IsAuthenticated])
+def get_historical_trades_view(request):
+    '''Parameters:	
+        symbol (str) – required
+        limit  (int) - def = 500 to max = 500
+        fromId (str) - TradeId to fetch from. Default gets most recent trades.
+        '''
+    if request.method == "POST":
+        cli = Client()
+        data = request.data
+        try:
+            recent = cli.get_historical_trades(**data)
+            return JsonResponse(recent,safe=False)
+        except BinanceAPIException as e:
+            return JsonResponse({"MessageError":e.message},safe=False)
+
+
+
+@api_view(['POST'])
+@authentication_classes((TokenAuthentication, ))
+@permission_classes([IsAuthenticated])
+def get_aggregate_trades_view(request):
+    '''Parameters:	
+            symbol (str) – required
+            fromId (str) – ID to get aggregate trades from INCLUSIVE.
+            startTime (int) – Timestamp in ms to get aggregate trades from INCLUSIVE.
+            endTime (int) – Timestamp in ms to get aggregate trades until INCLUSIVE.
+            limit (int) – Default 500; max 500.
+        '''
+    if request.method == "POST":
+        cli = Client()
+        data = request.data
+        try:
+            agg = cli.get_aggregate_trades(**data)
+            return JsonResponse(agg,safe=False)
+        except BinanceAPIException as e:
+            return JsonResponse({"MessageError":e.message},safe=False)
+
+
+
+@api_view(['POST'])
+@authentication_classes((TokenAuthentication, ))
+@permission_classes([IsAuthenticated])
+def get_klines(request):
+    '''Parameters:	
+            symbol (str) – required
+            interval (str) –
+            limit (int) –
+            Default 500; max 500.
+            startTime (int) –
+            endTime (int) –
+        '''
+    if request.method == "POST":
+        cli = Client()
+        data = request.data
+        try:
+            agg = cli.get_klines(**data)
+            return JsonResponse(agg,safe=False)
+        except BinanceAPIException as e:
+            return JsonResponse({"MessageError":e.message},safe=False)
+
+
+@api_view(['POST'])
+@authentication_classes((TokenAuthentication, ))
+@permission_classes([IsAuthenticated])
+def get_historical_klines(request):
+    '''Parameters:	
+            symbol (str) – Name of symbol pair e.g BNBBTC
+            interval (str) – Binance Kline interval
+            start_str (str|int) – Start date string in UTC format or timestamp in milliseconds
+            end_str (str|int) – optional - end date string in UTC format or timestamp in milliseconds (default will fetch everything up to now)
+            limit (int) – Default 500; max 1000.–
+        '''
+    if request.method == "POST":
+        cli = Client()
+        data = request.data
+        try:
+            agg = cli.get_historical_klines(**data)
+            return JsonResponse(agg,safe=False)
+        except BinanceAPIException as e:
+            return JsonResponse({"MessageError":e.message},safe=False)
+
+
 
 
 
